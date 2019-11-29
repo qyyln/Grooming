@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class init_edge {
     private int st_perNode;  //count of sliceable transponder per node;
-    HashMap<String, Float> resource = new HashMap<>();
+    HashMap<Integer, Double> resource = new HashMap<>();
     private int[][] ConnectionMatrix;
 
     public init_edge(int st_perNode, int[][] connectionMatrix) {
@@ -13,7 +13,7 @@ public class init_edge {
     public init_edge() {
     }
 
-    public init_edge(int st_perNode, HashMap<String, Float> resource) {
+    public init_edge(int st_perNode, HashMap<Integer, Double> resource) {
         this.st_perNode = st_perNode;
         this.resource = resource;
     }
@@ -26,26 +26,24 @@ public class init_edge {
         this.st_perNode = st_perNode;
     }
 
-    public HashMap<String, Float> getResource() {
+    public HashMap<Integer, Double> getResource() {
         return resource;
     }
 
     public void setConnectionMatrix(int[][] connectionMatrix) {
         ConnectionMatrix = connectionMatrix;
     }
-
     /*
         修改边的权值（资源）
          */
-    public void modifyResource(String s,float r){
-        String[] s_d = s.split(",");
-        int source_node = Integer.valueOf(s_d[0]);
-        int destination_node = Integer.valueOf(s_d[1]);
+    public void modifyResource(int s,int FS, double FSCapacity){
+        int source_node = s/100;
+        int destination_node = s%100;
         if(ConnectionMatrix[source_node][destination_node]==1){
-            this.resource.put(s,r);
+            double used_capacity = FS*FSCapacity;
+            this.resource.put(s,used_capacity);
         }else{
             System.out.println(s+"没有连接");
         }
-
     }
 }

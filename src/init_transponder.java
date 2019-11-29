@@ -6,7 +6,31 @@ public class init_transponder {
     private int stCapacity;    //sliceable_tansponder_Capacity;
     private int channelCapacity;
     private int substCapacity; //sub-sliceable_tansponder_Capacity;
-    private int stChannel;     //sliceable_tansponder_Channel;
+    private int stChannel;//sliceable_tansponder_Channel;
+    private boolean flag;  //uesd or unused
+
+    public init_transponder() {
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public init_transponder(int st_perNode, int sliceable, int slCapacity, int subcCapacity, int stCapacity, int channelCapacity, int substCapacity, int stChannel, boolean flag) {
+        this.st_perNode = st_perNode;
+        this.sliceable = sliceable;
+        this.slCapacity = slCapacity;
+        this.subcCapacity = subcCapacity;
+        this.stCapacity = stCapacity;
+        this.channelCapacity = channelCapacity;
+        this.substCapacity = substCapacity;
+        this.stChannel = stChannel;
+        this.flag = flag;
+    }
 
     public init_transponder(int st_perNode, int sliceable, int slCapacity, int subcCapacity, int stCapacity, int channelCapacity, int substCapacity, int stChannel) {
         this.st_perNode = st_perNode;

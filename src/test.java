@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class test {
     public static void main(String[] args) {
@@ -42,19 +43,14 @@ public class test {
         topo.setDistanceMatrix(dm);
         topo.topologyDistanceShow();
         topo.topologyConnectionShow();
-        edge.modifyResource("0,1",10);
-        edge.modifyResource("10,3",4);
-        edge.modifyResource("10,2",4);
+        for(int i=0;i<cm.length;i++){
+            for(int j=i+1;j<cm[0].length;j++){
+                int[][] connection = topo.getConnectionMatrix();
+                if(connection[i][j]==1){
+                    edge.modifyResource(i*100+j,10,25);
+                }
+            }
+        }
         System.out.println(edge.getResource());
-        HashMap<String,Float> map = new HashMap<>();
-        map = edge.getResource();
-        map.put("10,3",edge.getResource().get("10,3"));
-        System.out.println(map);
-        ArrayList<String> lable = new ArrayList<>();
-        init_Node node = new init_Node(14,lable);
-        node.node_init();
-        System.out.println(node.getLable_node());
-        node.node_state_update(4,"used");
-        System.out.println(node.getLable_node());
     }
 }

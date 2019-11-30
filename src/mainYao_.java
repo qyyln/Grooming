@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -13,7 +14,11 @@ public class main {
 	private ArrayList<Integer> edgeSet;
 	private HashMap<Integer,ArrayList<Integer>> edgeSpectrumRes;
 	private ArrayList<Integer> channel;
-	private HashMap<Integer,ArrayList<Object>> spectrumRes;
+	public HashMap<Integer,ArrayList<Object>> spectrumRes;
+	public HashMap<Integer,ArrayList<Object>> lightPathRes;
+	public ArrayList<ArrayList<Object>> servList;
+	public String SR;
+
 	public int st_perNode = 15;
 	public int sliceable = 3;
 	public int slCapacity = 400;
@@ -25,6 +30,7 @@ public class main {
 	public int channelCapacity = 40;
 	public int substChannel = 4;
 	public int stChannel= 10;
+	public int[][] ConnectionMatrix;
 
 	public int NodeNum;
 
@@ -56,10 +62,9 @@ public class main {
 * yao tianjia
 * */
 	public void initDisMatrix(int[][] dm){
-		int[][] ConnectionMatrix = new int[dm.length][dm[0].length];
-		for(int i=0;i<ConnectionMatrix.length;i++){
-			for(int j=0;j<ConnectionMatrix[0].length;j++){
-				if(ConnectionMatrix[i][j]!=0){
+		for(int i=0;i<dm.length;i++){
+			for(int j=0;j<dm[0].length;j++){
+				if(dm[i][j]!=0){
 					ConnectionMatrix[i][j]=1;
 				}else{
 					ConnectionMatrix[i][j]=0;
@@ -91,15 +96,59 @@ public class main {
 			for(int j=0;j<NodeNum;j++){
 				ArrayList<Object> list= new ArrayList<>();
 				spectrumRes.put(i*100+j,list);
+				if(i!=j){
+					if(ConnectionMatrix[i][j]==1){
+						ArrayList<Integer> list1 = new ArrayList<>();
+						edgeSpectrumRes.put(i*100+j,list1);
+					}
+				}
 			}
 		}
-		edgeSpectrumRes
 	}
 
+	public void initLightPathResource(){
+		for(int i=0;i<NodeNum;i++){
+			for(int j=0;j<NodeNum;j++){
+				ArrayList<Object> list = new ArrayList<>();
+				lightPathRes.put(i*100+j,list);
+			}
+		}
+	}
 
+	public void initServiceList(){
+		servList = new ArrayList<>();
+	}
 
+	public void setSR(String s){
+		SR = s;
+	}
 
+	public void updateServiceList(){
+		for(int i=0;i<servList.size()-1;i++){
+			ArrayList<Object> temp = new ArrayList<>();
+			for(int j=1;j<servList.size();j++){
+				if(servList.get(j).get(6) > servList.get(i).get(6)){
+					temp = servList.get(j);
+					servList.set(j,servList.get(i));
+					servList.set(i,temp);
+				}
+			}
+		}
+	}
 
+	public void autoStopServivice(int currClock){
+		updateServiceList();
+		int stopCount = 0;
+		for(int i=0;i<servList.size();i++){
+			if(servList.get(i).get(6)<currClock){
+				stopCount++;
+				stopService(servList.get(i).get(0),servList.get(i).get(1),servList.get(i).get(3),
+						servList.get(i).get(2),servList.get(i).get(5));
+			}
+		}
+		System.out.println("  "+ Arrays.toString(stopCount)+"services have been stopped in this second");
+	}
+	
 /*
 * lianmeng tianjia
 * */

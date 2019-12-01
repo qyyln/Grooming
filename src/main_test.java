@@ -2,44 +2,71 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class main_test {
-    public static void main(String[] args) {
-    	ArrayList<ArrayList<String>> node_st_list = new ArrayList<>();
-    	ArrayList<String> node0 = new ArrayList<>();
-    	ArrayList<String> node1 = new ArrayList<>();
-    	node0.add("unused");
-    	node1.add("unused");
-    	node_st_list.add(node0);
-    	node_st_list.add(node1);
-    	ArrayList<ArrayList<ArrayList<String>>> node_subst_list = new ArrayList<>();
-    	ArrayList<ArrayList<String>> node2 = new ArrayList<>();
-    	ArrayList<String> tran2 = new ArrayList<>();
-		for(int i = 0; i < 3; i++){
-			tran2.add("unused");
+    @SuppressWarnings("unchecked")
+	public static void main(String[] args) {
+		main m = new main();
+		
+		m.init();
+		System.out.println("test transponderSearch");
+		m.transponderSearch(0);
+		for(ArrayList<String> tmp : m.getNode_st_list()){
+			for(String s: tmp)
+				System.out.print(tmp);
 		}
-		node2.add(tran2);
-		
-    	ArrayList<ArrayList<String>> node3 = new ArrayList<>();
-    	ArrayList<String> tran3 = new ArrayList<>();
-		for(int i = 0; i < 3; i++){
-			tran3.add("unused");
-		}
-		node3.add(tran3);
-		
-		node_subst_list.add(node2);
-		node_subst_list.add(node3);
+		System.out.println();
+		System.out.println();
 
-		HashMap<Integer, ArrayList<Integer>> pathCoded = new HashMap<>();
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		path.add(0);
-		path.add(4);
-		path.add(1);
-		pathCoded.put(1, path);
-		main m = new main(false,-1,false,-1,node_st_list, node_subst_list, pathCoded);
-		
-		ArrayList<Integer> tmp = new ArrayList<Integer>();
-		tmp.set(2, 3);
+		m.init();
+		m.transponderTake(1,0);
+		System.out.println("test transponderTake");
+		m.transponderTake(1,0);
+		System.out.print(m.getNode_st_list());
+		System.out.println();
+		System.out.print(m.getNode_subst_list());
+		System.out.println();
+		System.out.println();
 
+		m.init();
+		System.out.println("test subtransponderTake");
+		m.subtransponderTake(1,0,0);
+		System.out.print(m.getNode_st_list());
+		System.out.println();
+		System.out.print(m.getNode_subst_list());
+		System.out.println();
+		System.out.println();
+
+		m.init();
+		System.out.println("test subtransponderTake");
+		m.transponderRelease(1,0);
+		System.out.print(m.getNode_st_list());
+		System.out.println();
+		System.out.print(m.getNode_subst_list());
+		System.out.println();
+		System.out.println();
 		
+		m.init();
+		System.out.println("test subtransponderRelease");
+		m.subtransponderTake(1,0,0);
+		System.out.print(m.getNode_st_list());
+		System.out.println();
+		System.out.print(m.getNode_subst_list());
+		System.out.println();
+		m.subtransponderRelease(1,0,0);
+		System.out.print(m.getNode_st_list());
+		System.out.println();
+		System.out.print(m.getNode_subst_list());
+		System.out.println();
+		System.out.println();
+		
+		m.init();
+		System.out.println("test subtransponderRelease");
+		ArrayList<Integer> channelset = new ArrayList<>();
+		//use channel 0,1,2,3
+		channelset.add(0);
+		channelset.add(1);
+		channelset.add(2);
+		channelset.add(3);
+		m.spectrumRelease(0, 1, channelset, null);
 		
     }
 }

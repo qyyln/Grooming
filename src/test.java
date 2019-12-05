@@ -4,53 +4,17 @@ import java.util.List;
 
 public class test {
     public static void main(String[] args) {
-        int [][] dm = {
-                {0,2100,3000,0,0,0,0,4800,0,0,0,0,0,0},
-                {2100,0,1200,1500,0,0,0,0,0,0,0,0,0,0},
-                {3000,1200,0,0,0,3600,0,0,0,0,0,0,0,0},
-                {0,1500,0,0,1200,0,0,0,0,0,3900,0,0,0},
-                {0,0,0,1200,0,2400,1200,0,0,0,0,0,0,0},
-                {0,0,3600,0,2400,0,0,0,0,2100,0,0,0,3600},
-                {0,0,0,0,1200,0,0,1500,0,2700,0,0,0,0},
-                {4800,0,0,0,0,0,1500,0,1500,0,0,0,0,0},
-                {0,0,0,0,0,0,0,1500,0,1500,0,600,600,0},
-                {0,0,0,0,0,2100,2700,0,1500,0,0,0,0,0},
-                {0,0,0,3900,0,0,0,0,0,0,0,1200,1500,0},
-                {0,0,0,0,0,0,0,0,600,0,1200,0,0,600},
-                {0,0,0,0,0,0,0,0,600,0,1500,0,0,300},
-                {0,0,0,0,0,0,0,0,600,0,1500,0,0,300},
-                {0,0,0,0,0,3600,0,0,0,0,0,600,300,0},
-        };
-        int[][] cm = {
-                {0,2100,3000,0,0,0,0,4800,0,0,0,0,0,0},
-                {2100,0,1200,1500,0,0,0,0,0,0,0,0,0,0},
-                {3000,1200,0,0,0,3600,0,0,0,0,0,0,0,0},
-                {0,1500,0,0,1200,0,0,0,0,0,3900,0,0,0},
-                {0,0,0,1200,0,2400,1200,0,0,0,0,0,0,0},
-                {0,0,3600,0,2400,0,0,0,0,2100,0,0,0,3600},
-                {0,0,0,0,1200,0,0,1500,0,2700,0,0,0,0},
-                {4800,0,0,0,0,0,1500,0,1500,0,0,0,0,0},
-                {0,0,0,0,0,0,0,1500,0,1500,0,600,600,0},
-                {0,0,0,0,0,2100,2700,0,1500,0,0,0,0,0},
-                {0,0,0,3900,0,0,0,0,0,0,0,1200,1500,0},
-                {0,0,0,0,0,0,0,0,600,0,1200,0,0,600},
-                {0,0,0,0,0,0,0,0,600,0,1500,0,0,300},
-                {0,0,0,0,0,3600,0,0,0,0,0,600,300,0},
-        };
-        init_topology topo = new init_topology();
-        init_edge edge = new init_edge(14,cm);
-        topo.setConnectionMatrix(cm);
-        topo.setDistanceMatrix(dm);
-        topo.topologyDistanceShow();
-        topo.topologyConnectionShow();
-        for(int i=0;i<cm.length;i++){
-            for(int j=i+1;j<cm[0].length;j++){
-                int[][] connection = topo.getConnectionMatrix();
-                if(connection[i][j]==1){
-                    edge.modifyResource(i*100+j,10,25);
-                }
-            }
-        }
-        System.out.println(edge.getResource());
+        mainIntegration m = new mainIntegration();
+        m.initDisMatrix(m.DistanceMatrix);//connectionmatrix
+        m.initNodeSTResource();
+        m.initSpectrumResource();
+        m.initLightPathResource();
+        m.initServiceList();
+        m.updateServiceList();
+        m.autoStopServivice(10);
+        ArrayList<Integer> path = new ArrayList<>();
+        path.add(0);
+        path.add(1);
+        m.addLightPath(0,1,10,true,path);
     }
 }

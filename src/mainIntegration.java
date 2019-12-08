@@ -10,7 +10,6 @@ public class mainIntegration {
     private ArrayList<ArrayList<ArrayList<String>>> node_subst_list;
     private HashMap<Integer, ArrayList<Integer>> pathCoded;
     private HashMap<Integer, ArrayList<Integer>> edgeSpectrumRes;
-    //	private ArrayList<Integer> channel;
     private HashMap<Integer, ArrayList<ArrayList<Object>>> spectrumRes;
     private int fiberCapacity = 4;
     private boolean spectrumSearchBooleanReturn;
@@ -32,7 +31,14 @@ public class mainIntegration {
     public HashMap<Integer, ArrayList<ArrayList<Object>>> lightPathRes;
     public ArrayList<ArrayList<Object>> servList;
     public int activeService;
-
+    private ArrayList<ArrayList<Integer>> KshortestPathResult;
+    private boolean addServiceBooleanReturn;
+    private int addServiceActiveService;
+	private int addServicePhysicalLength;
+	private int addServiceVirtualLength;
+	private int addServicePathDelay;
+	private int addServiceTransTake;
+	private ArrayList<ArrayList<Integer>> disMatrix;
     private double dis_ShortestPath;
     private ArrayList<Integer> pathij_ShortestPath;
     private ArrayList<Double> returnDistanceList_KshortestPath;
@@ -40,12 +46,8 @@ public class mainIntegration {
     private double ELP_edgeWeight;
     private double PLP_edgeWeight;
     private double PSubLP_edgeWeight;
-
-    GroomingPolicy groomingPolicy = new GroomingPolicy();
-
-
     public int NodeNum;
-
+    GroomingPolicy groomingPolicy = new GroomingPolicy();
     public int[][] DistanceMatrix = {
             {0, 2100, 3000, 0, 0, 0, 0, 4800, 0, 0, 0, 0, 0, 0},
             {2100, 0, 1200, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -67,134 +69,638 @@ public class mainIntegration {
 
     }
 
+
     public static boolean isTransponderSearchFound() {
-        return transponderSearchFound;
-    }
-
-    public static void setTransponderSearchFound(boolean transponderSearchFound) {
-        mainIntegration.transponderSearchFound = transponderSearchFound;
-    }
-
-    public static int getTransponder() {
-        return transponder;
-    }
-
-    public static void setTransponder(int transponder) {
-        mainIntegration.transponder = transponder;
-    }
-
-    public boolean isSubtransponderSearchFound() {
-        return subtransponderSearchFound;
-    }
-
-    public void setSubtransponderSearchFound(boolean subtransponderSearchFound) {
-        this.subtransponderSearchFound = subtransponderSearchFound;
-    }
-
-    public int getSubtransponder() {
-        return subtransponder;
-    }
-
-    public void setSubtransponder(int subtransponder) {
-        this.subtransponder = subtransponder;
-    }
-
-    public ArrayList<ArrayList<String>> getNode_st_list() {
-        return node_st_list;
-    }
-
-    public void setNode_st_list(ArrayList<ArrayList<String>> node_st_list) {
-        this.node_st_list = node_st_list;
-    }
-
-    public ArrayList<ArrayList<ArrayList<String>>> getNode_subst_list() {
-        return node_subst_list;
-    }
-
-    public void setNode_subst_list(ArrayList<ArrayList<ArrayList<String>>> node_subst_list) {
-        this.node_subst_list = node_subst_list;
-    }
-
-    public HashMap<Integer, ArrayList<Integer>> getPathCoded() {
-        return pathCoded;
-    }
-
-    public void setPathCoded(HashMap<Integer, ArrayList<Integer>> pathCoded) {
-        this.pathCoded = pathCoded;
-    }
-
-    public HashMap<Integer, ArrayList<Integer>> getEdgeSpectrumRes() {
-        return edgeSpectrumRes;
-    }
-
-    public void setEdgeSpectrumRes(HashMap<Integer, ArrayList<Integer>> edgeSpectrumRes) {
-        this.edgeSpectrumRes = edgeSpectrumRes;
-    }
-
-    public HashMap<Integer, ArrayList<ArrayList<Object>>> getSpectrumRes() {
-        return spectrumRes;
-    }
-
-    public void setSpectrumRes(HashMap<Integer, ArrayList<ArrayList<Object>>> spectrumRes) {
-        this.spectrumRes = spectrumRes;
-    }
-
-    public int getFiberCapacity() {
-        return fiberCapacity;
-    }
-
-    public void setFiberCapacity(int fiberCapacity) {
-        this.fiberCapacity = fiberCapacity;
-    }
+		return transponderSearchFound;
+	}
 
 
-
-    public boolean isSpectrumSearchBooleanReturn() {
-        return spectrumSearchBooleanReturn;
-    }
-
-    public void setSpectrumSearchBooleanReturn(boolean spectrumSearchBooleanReturn) {
-        this.spectrumSearchBooleanReturn = spectrumSearchBooleanReturn;
-    }
-
-    public ArrayList<Integer> getSpectrumSearchArrayListReturn() {
-        return spectrumSearchArrayListReturn;
-    }
-
-    public void setSpectrumSearchArrayListReturn(ArrayList<Integer> spectrumSearchArrayListReturn) {
-        this.spectrumSearchArrayListReturn = spectrumSearchArrayListReturn;
-    }
-
-    public String getSR() {
-        return SR;
-    }
+	public static void setTransponderSearchFound(boolean transponderSearchFound) {
+		mainIntegration.transponderSearchFound = transponderSearchFound;
+	}
 
 
-    public int getSubstChannel() {
-        return substChannel;
-    }
+	public static int getTransponder() {
+		return transponder;
+	}
 
-    public void setSubstChannel(int substChannel) {
-        this.substChannel = substChannel;
-    }
 
-    public boolean isSpectrumReserveBooleanReturn() {
-        return spectrumReserveBooleanReturn;
-    }
+	public static void setTransponder(int transponder) {
+		mainIntegration.transponder = transponder;
+	}
 
-    public void setSpectrumReserveBooleanReturn(boolean spectrumReserveBooleanReturn) {
-        this.spectrumReserveBooleanReturn = spectrumReserveBooleanReturn;
-    }
 
-    public int getSpectrumReserveIntReturn() {
-        return spectrumReserveIntReturn;
-    }
+	public boolean isSubtransponderSearchFound() {
+		return subtransponderSearchFound;
+	}
 
-    public void setSpectrumReserveIntReturn(int spectrumReserveIntReturn) {
-        this.spectrumReserveIntReturn = spectrumReserveIntReturn;
-    }
 
-    public void init(){
+	public void setSubtransponderSearchFound(boolean subtransponderSearchFound) {
+		this.subtransponderSearchFound = subtransponderSearchFound;
+	}
+
+
+	public int getSubtransponder() {
+		return subtransponder;
+	}
+
+
+	public void setSubtransponder(int subtransponder) {
+		this.subtransponder = subtransponder;
+	}
+
+
+	public ArrayList<ArrayList<String>> getNode_st_list() {
+		return node_st_list;
+	}
+
+
+	public void setNode_st_list(ArrayList<ArrayList<String>> node_st_list) {
+		this.node_st_list = node_st_list;
+	}
+
+
+	public ArrayList<ArrayList<ArrayList<String>>> getNode_subst_list() {
+		return node_subst_list;
+	}
+
+
+	public void setNode_subst_list(ArrayList<ArrayList<ArrayList<String>>> node_subst_list) {
+		this.node_subst_list = node_subst_list;
+	}
+
+
+	public HashMap<Integer, ArrayList<Integer>> getPathCoded() {
+		return pathCoded;
+	}
+
+
+	public void setPathCoded(HashMap<Integer, ArrayList<Integer>> pathCoded) {
+		this.pathCoded = pathCoded;
+	}
+
+
+	public HashMap<Integer, ArrayList<Integer>> getEdgeSpectrumRes() {
+		return edgeSpectrumRes;
+	}
+
+
+	public void setEdgeSpectrumRes(HashMap<Integer, ArrayList<Integer>> edgeSpectrumRes) {
+		this.edgeSpectrumRes = edgeSpectrumRes;
+	}
+
+
+	public HashMap<Integer, ArrayList<ArrayList<Object>>> getSpectrumRes() {
+		return spectrumRes;
+	}
+
+
+	public void setSpectrumRes(HashMap<Integer, ArrayList<ArrayList<Object>>> spectrumRes) {
+		this.spectrumRes = spectrumRes;
+	}
+
+
+	public int getFiberCapacity() {
+		return fiberCapacity;
+	}
+
+
+	public void setFiberCapacity(int fiberCapacity) {
+		this.fiberCapacity = fiberCapacity;
+	}
+
+
+	public boolean isSpectrumSearchBooleanReturn() {
+		return spectrumSearchBooleanReturn;
+	}
+
+
+	public void setSpectrumSearchBooleanReturn(boolean spectrumSearchBooleanReturn) {
+		this.spectrumSearchBooleanReturn = spectrumSearchBooleanReturn;
+	}
+
+
+	public ArrayList<Integer> getSpectrumSearchArrayListReturn() {
+		return spectrumSearchArrayListReturn;
+	}
+
+
+	public void setSpectrumSearchArrayListReturn(ArrayList<Integer> spectrumSearchArrayListReturn) {
+		this.spectrumSearchArrayListReturn = spectrumSearchArrayListReturn;
+	}
+
+
+	public int getSubstChannel() {
+		return substChannel;
+	}
+
+
+	public void setSubstChannel(int substChannel) {
+		this.substChannel = substChannel;
+	}
+
+
+	public boolean isSpectrumReserveBooleanReturn() {
+		return spectrumReserveBooleanReturn;
+	}
+
+
+	public void setSpectrumReserveBooleanReturn(boolean spectrumReserveBooleanReturn) {
+		this.spectrumReserveBooleanReturn = spectrumReserveBooleanReturn;
+	}
+
+
+	public int getSpectrumReserveIntReturn() {
+		return spectrumReserveIntReturn;
+	}
+
+
+	public void setSpectrumReserveIntReturn(int spectrumReserveIntReturn) {
+		this.spectrumReserveIntReturn = spectrumReserveIntReturn;
+	}
+
+
+	public int getSt_perNode() {
+		return st_perNode;
+	}
+
+
+	public void setSt_perNode(int st_perNode) {
+		this.st_perNode = st_perNode;
+	}
+
+
+	public int getSliceable() {
+		return sliceable;
+	}
+
+
+	public void setSliceable(int sliceable) {
+		this.sliceable = sliceable;
+	}
+
+
+	public int getSlCapacity() {
+		return slCapacity;
+	}
+
+
+	public void setSlCapacity(int slCapacity) {
+		this.slCapacity = slCapacity;
+	}
+
+
+	public int getSubcCapacity() {
+		return subcCapacity;
+	}
+
+
+	public void setSubcCapacity(int subcCapacity) {
+		this.subcCapacity = subcCapacity;
+	}
+
+
+	public int getFS() {
+		return FS;
+	}
+
+
+	public void setFS(int fS) {
+		FS = fS;
+	}
+
+
+	public int getGuardband() {
+		return guardband;
+	}
+
+
+	public void setGuardband(int guardband) {
+		this.guardband = guardband;
+	}
+
+
+	public int getStCapacity() {
+		return stCapacity;
+	}
+
+
+	public void setStCapacity(int stCapacity) {
+		this.stCapacity = stCapacity;
+	}
+
+
+	public int getChannelCapacity() {
+		return channelCapacity;
+	}
+
+
+	public void setChannelCapacity(int channelCapacity) {
+		this.channelCapacity = channelCapacity;
+	}
+
+
+	public int getStChannel() {
+		return stChannel;
+	}
+
+
+	public void setStChannel(int stChannel) {
+		this.stChannel = stChannel;
+	}
+
+
+	public int[][] getConnectionMatrix() {
+		return ConnectionMatrix;
+	}
+
+
+	public void setConnectionMatrix(int[][] connectionMatrix) {
+		ConnectionMatrix = connectionMatrix;
+	}
+
+
+	public HashMap<Integer, ArrayList<ArrayList<Object>>> getLightPathRes() {
+		return lightPathRes;
+	}
+
+
+	public void setLightPathRes(HashMap<Integer, ArrayList<ArrayList<Object>>> lightPathRes) {
+		this.lightPathRes = lightPathRes;
+	}
+
+
+	public ArrayList<ArrayList<Object>> getServList() {
+		return servList;
+	}
+
+
+	public void setServList(ArrayList<ArrayList<Object>> servList) {
+		this.servList = servList;
+	}
+
+
+	public int getActiveService() {
+		return activeService;
+	}
+
+
+	public void setActiveService(int activeService) {
+		this.activeService = activeService;
+	}
+
+
+	public ArrayList<ArrayList<Integer>> getKshortestPathResult() {
+		return KshortestPathResult;
+	}
+
+
+	public void setKshortestPathResult(ArrayList<ArrayList<Integer>> kshortestPathResult) {
+		KshortestPathResult = kshortestPathResult;
+	}
+
+
+	public boolean isAddServiceBooleanReturn() {
+		return addServiceBooleanReturn;
+	}
+
+
+	public void setAddServiceBooleanReturn(boolean addServiceBooleanReturn) {
+		this.addServiceBooleanReturn = addServiceBooleanReturn;
+	}
+
+
+	public int getAddServiceActiveService() {
+		return addServiceActiveService;
+	}
+
+
+	public void setAddServiceActiveService(int addServiceActiveService) {
+		this.addServiceActiveService = addServiceActiveService;
+	}
+
+
+	public int getAddServicePhysicalLength() {
+		return addServicePhysicalLength;
+	}
+
+
+	public void setAddServicePhysicalLength(int addServicePhysicalLength) {
+		this.addServicePhysicalLength = addServicePhysicalLength;
+	}
+
+
+	public int getAddServiceVirtualLength() {
+		return addServiceVirtualLength;
+	}
+
+
+	public void setAddServiceVirtualLength(int addServiceVirtualLength) {
+		this.addServiceVirtualLength = addServiceVirtualLength;
+	}
+
+
+	public int getAddServicePathDelay() {
+		return addServicePathDelay;
+	}
+
+
+	public void setAddServicePathDelay(int addServicePathDelay) {
+		this.addServicePathDelay = addServicePathDelay;
+	}
+
+
+	public int getAddServiceTransTake() {
+		return addServiceTransTake;
+	}
+
+
+	public void setAddServiceTransTake(int addServiceTransTake) {
+		this.addServiceTransTake = addServiceTransTake;
+	}
+
+
+	public ArrayList<ArrayList<Integer>> getDisMatrix() {
+		return disMatrix;
+	}
+
+
+	public void setDisMatrix(ArrayList<ArrayList<Integer>> disMatrix) {
+		this.disMatrix = disMatrix;
+	}
+
+
+	public int getNodeNum() {
+		return NodeNum;
+	}
+
+
+	public void setNodeNum(int nodeNum) {
+		NodeNum = nodeNum;
+	}
+
+
+	public GroomingPolicy getGroomingPolicy() {
+		return groomingPolicy;
+	}
+
+
+	public void setGroomingPolicy(GroomingPolicy groomingPolicy) {
+		this.groomingPolicy = groomingPolicy;
+	}
+
+
+	public int[][] getDistanceMatrix() {
+		return DistanceMatrix;
+	}
+
+
+	public void setDistanceMatrix(int[][] distanceMatrix) {
+		DistanceMatrix = distanceMatrix;
+	}
+
+
+	public int getBlockCount() {
+		return blockCount;
+	}
+
+
+	public void setBlockCount(int blockCount) {
+		this.blockCount = blockCount;
+	}
+
+
+	public int getSuccCount() {
+		return succCount;
+	}
+
+
+	public void setSuccCount(int succCount) {
+		this.succCount = succCount;
+	}
+
+
+	public int getTotalPhyLen() {
+		return totalPhyLen;
+	}
+
+
+	public void setTotalPhyLen(int totalPhyLen) {
+		this.totalPhyLen = totalPhyLen;
+	}
+
+
+	public int getTotalVirLen() {
+		return totalVirLen;
+	}
+
+
+	public void setTotalVirLen(int totalVirLen) {
+		this.totalVirLen = totalVirLen;
+	}
+
+
+	public int getTotalDelay() {
+		return totalDelay;
+	}
+
+
+	public void setTotalDelay(int totalDelay) {
+		this.totalDelay = totalDelay;
+	}
+
+
+	public int getTotalZeroDelay() {
+		return totalZeroDelay;
+	}
+
+
+	public void setTotalZeroDelay(int totalZeroDelay) {
+		this.totalZeroDelay = totalZeroDelay;
+	}
+
+
+	public int getTotalStCount() {
+		return totalStCount;
+	}
+
+
+	public void setTotalStCount(int totalStCount) {
+		this.totalStCount = totalStCount;
+	}
+
+
+	public int getTotalSubstCount() {
+		return totalSubstCount;
+	}
+
+
+	public void setTotalSubstCount(int totalSubstCount) {
+		this.totalSubstCount = totalSubstCount;
+	}
+
+
+	public int getTotalEnergyConsumed() {
+		return totalEnergyConsumed;
+	}
+
+
+	public void setTotalEnergyConsumed(int totalEnergyConsumed) {
+		this.totalEnergyConsumed = totalEnergyConsumed;
+	}
+
+
+	public String getSR() {
+		return SR;
+	}
+
+
+	public void setDis_ShortestPath(double dis_ShortestPath) {
+		this.dis_ShortestPath = dis_ShortestPath;
+	}
+
+
+	public void setPathij_ShortestPath(ArrayList<Integer> pathij_ShortestPath) {
+		this.pathij_ShortestPath = pathij_ShortestPath;
+	}
+
+
+	public void setReturnDistanceList_KshortestPath(ArrayList<Double> returnDistanceList_KshortestPath) {
+		this.returnDistanceList_KshortestPath = returnDistanceList_KshortestPath;
+	}
+
+
+	public void setReturnPathList_KshortestPath(ArrayList<ArrayList<Integer>> returnPathList_KshortestPath) {
+		this.returnPathList_KshortestPath = returnPathList_KshortestPath;
+	}
+
+
+	public void setELP_edgeWeight(double eLP_edgeWeight) {
+		ELP_edgeWeight = eLP_edgeWeight;
+	}
+
+
+	public void setPLP_edgeWeight(double pLP_edgeWeight) {
+		PLP_edgeWeight = pLP_edgeWeight;
+	}
+
+
+	public void setPSubLP_edgeWeight(double pSubLP_edgeWeight) {
+		PSubLP_edgeWeight = pSubLP_edgeWeight;
+	}
+
+
+	public void setFound_Dijkstra(boolean isFound_Dijkstra) {
+		this.isFound_Dijkstra = isFound_Dijkstra;
+	}
+
+
+	public void setDistance_Dijkstra(double[] distance_Dijkstra) {
+		this.distance_Dijkstra = distance_Dijkstra;
+	}
+
+
+	public void setPathij_Dijkstra(ArrayList<String[]> pathij_Dijkstra) {
+		this.pathij_Dijkstra = pathij_Dijkstra;
+	}
+
+
+	public void setBlockRatio(double blockRatio) {
+		this.blockRatio = blockRatio;
+	}
+
+
+	public void setAveragePhyHop(double averagePhyHop) {
+		this.averagePhyHop = averagePhyHop;
+	}
+
+
+	public void setAverageVirHop(double averageVirHop) {
+		this.averageVirHop = averageVirHop;
+	}
+
+
+	public void setAveragePathDelay(double averagePathDelay) {
+		this.averagePathDelay = averagePathDelay;
+	}
+
+
+	public void setAverageTransponderUsed(double averageTransponderUsed) {
+		this.averageTransponderUsed = averageTransponderUsed;
+	}
+
+
+	public void setAverageSubTransponderUsed(double averageSubTransponderUsed) {
+		this.averageSubTransponderUsed = averageSubTransponderUsed;
+	}
+
+
+	public void setTotalEnergyUsed(double totalEnergyUsed) {
+		this.totalEnergyUsed = totalEnergyUsed;
+	}
+
+
+	public void setAverageZeroDelay(double averageZeroDelay) {
+		this.averageZeroDelay = averageZeroDelay;
+	}
+
+
+	public void setDistance_Floyd(double[][] distance_Floyd) {
+		this.distance_Floyd = distance_Floyd;
+	}
+
+
+	public void setPath_Floyd(int[][] path_Floyd) {
+		this.path_Floyd = path_Floyd;
+	}
+
+
+	public void setPathD_Floyd(HashMap<Integer, ArrayList<Integer>> pathD_Floyd) {
+		this.pathD_Floyd = pathD_Floyd;
+	}
+
+
+	public void setDistance_dijkstra(double[] distance_dijkstra) {
+		this.distance_dijkstra = distance_dijkstra;
+	}
+
+
+	public void setPath_dijkstra(int[] path_dijkstra) {
+		this.path_dijkstra = path_dijkstra;
+	}
+
+
+	public void setServiceSet_genService(ArrayList<Integer[]> serviceSet_genService) {
+		this.serviceSet_genService = serviceSet_genService;
+	}
+
+
+	public void setDemandSet_genService(ArrayList<Double> demandSet_genService) {
+		this.demandSet_genService = demandSet_genService;
+	}
+
+
+	public void setDurationSet_genService(ArrayList<Double> durationSet_genService) {
+		this.durationSet_genService = durationSet_genService;
+	}
+
+
+	public void setToleranceSet_genService(ArrayList<Double> toleranceSet_genService) {
+		this.toleranceSet_genService = toleranceSet_genService;
+	}
+
+
+	public void setServicePath_genServicePath(ArrayList<ArrayList<Integer>> servicePath_genServicePath) {
+		this.servicePath_genServicePath = servicePath_genServicePath;
+	}
+
+
+	public void setServicePathCoded_genServicePath(ArrayList<ArrayList<Integer>> servicePathCoded_genServicePath) {
+		this.servicePathCoded_genServicePath = servicePathCoded_genServicePath;
+	}
+
+
+	public void init(){
         ArrayList<ArrayList<String>> node_st_list = new ArrayList<>();
         //node_st_list = [["unused"],["unused"]]
         ArrayList<String> node0 = new ArrayList<>();
@@ -377,7 +883,6 @@ public class mainIntegration {
     * yao tianjia end
     * */
 
-
     public void transponderSearch(int node){
         //Each node has a transponder. The node_st_list stores whether the transponder is used.
         transponderSearchFound = false;
@@ -390,7 +895,6 @@ public class mainIntegration {
             }
         }
     }
-
 
     public void subTransponderSearch(int node){
         //Each node has a transponder. A transponder can be divided into three subtransponders.
@@ -420,12 +924,10 @@ public class mainIntegration {
         node_subst_list.get(node).set(transponder, st );
     }
 
-
     public void subtransponderTake(int node, int transponder, int subt){
         node_subst_list.get(node).get(transponder).set(subt, "used");
         node_st_list.get(node).set(transponder, "used");
     }
-
 
     public void transponderRelease(int node, int transponder){
         node_st_list.get(node).set(transponder, "unused");
@@ -435,7 +937,6 @@ public class mainIntegration {
         }
         node_subst_list.get(node).set(transponder, st);
     }
-
 
     public void subtransponderRelease(int node, int transponder, int subt){
         ArrayList<String> st = new ArrayList<>();
@@ -454,7 +955,6 @@ public class mainIntegration {
             node_st_list.get(node).set(transponder, "unused");
     }
 
-
     public void spectrumTake(int nodei, int nodej, ArrayList<Integer> channelSet, ArrayList<Integer> path){
         //All the edges between ij are stored in edgeSet, marked as start * 100 + end
         //edgeSpectrumRes holds the usage of each edge channel
@@ -471,7 +971,6 @@ public class mainIntegration {
             }
         }
     }
-
 
     @SuppressWarnings("unchecked")
     public void spectrumRelease(int nodei, int nodej, ArrayList<Integer> channelSet, ArrayList<Integer> path){
@@ -521,6 +1020,7 @@ public class mainIntegration {
             spectrumRes.remove(popSRList.get(i));
         }
     }
+    
     public static <T extends Comparable<T>> boolean compare(ArrayList<T> a, ArrayList<T> b) {
         //Determine if the lists are equal
         if(a.size() != b.size())
@@ -531,7 +1031,6 @@ public class mainIntegration {
         }
         return true;
     }
-
 
     public void spectrumSearch(int nodei, int nodej, int channelNeeded, ArrayList<Integer> path){
         if(path == null)
@@ -569,7 +1068,6 @@ public class mainIntegration {
             System.out.println("spectrumUnavailable");
         }
     }
-
 
     public void spectrumReserve(int nodei, int nodej, int channelNeeded, ArrayList<Integer> path, String LorSub){
         if(path == null)
@@ -949,7 +1447,6 @@ public class mainIntegration {
         }
     }
 
-
     public void consumeLightPath(int nodei, int nodej,int demand){
         for(int i = 0; i < lightPathRes.get(nodei*100 + nodej).size(); i++){
             ArrayList<Object> lp = lightPathRes.get(nodei*100 + nodej).get(i);
@@ -980,7 +1477,7 @@ public class mainIntegration {
                 pathij.add(tmp);
                 int currNode = nodei;
                 for(int j = 0; j < pathij.size()-1; j++){
-                    releaseLightPath(currNode, pathij.get(j+1).get(0), demand);
+                    releaseLightPath(currNode, (int)pathij.get(j+1).get(0), demand);
                     currNode = (int)pathij.get(j+1).get(0);
                 }
 
@@ -990,24 +1487,154 @@ public class mainIntegration {
             servList.remove(popServCount);
         activeService = -1;
     }
-    private void releaseLightPath(int currNode, Object object, int demand) {
-        // TODO Auto-generated method stub
 
-    }
-    public void addService(int nodei, int nodej, int demand, ArrayList<ArrayList<Object>> pathij, int serviceID, int stoptime){
-        int physicalLength = 0;
-        int transTake = 0;
-        int virtualLength = pathij.size();
-        int pathDelay = 0;
-        ArrayList<Object> tmp = new ArrayList<>();
+	public void addService(int nodei, int nodej, int demand, ArrayList<ArrayList<Object>> pathij, int serviceID, int stoptime){
+		int physicalLength = 0;
+		int transTake = 0;
+		int virtualLength = pathij.size();
+		int pathDelay = 0;
+		ArrayList<Object> tmp = new ArrayList<>();
         tmp.add(nodej);
         pathij.add(tmp);
         int currNode = nodei;
         ArrayList<ArrayList<Object>> pathFoundList = new ArrayList<>();
+        for(int pCount = 0; pCount < pathij.size() - 1; pCount ++){
+        	int pathFound = -1;
+        	KshortestPath(currNode, pathij.get(pCount + 1));
+        	ArrayList<ArrayList<Integer>> paths = KshortestPathResult;//path result in KshortestPathResult
+        	if(pathij.get(pCount).get(1).equals("PSubLP")){
+        		int cN0 = (demand + 80 -1)/80;
+        		int cN = 4*((cN0 + 4 - 1)/4);
+        		for(int ppCount = 0; ppCount < paths.size(); ppCount++){
+        			spectrumSearch(nodei, nodej, cN, paths.get(ppCount));
+        		    boolean spectrumFound = spectrumReserveBooleanReturn;
+        		    int spectrumX = spectrumReserveIntReturn;
+        		    transponderSearch(nodei);
+        		    boolean txFound = transponderSearchFound;
+        		    int txX = transponder;
+        		    transponderSearch(nodej);
+        		    boolean rxFound = transponderSearchFound;
+        		    int rxX = transponder;
+        		    if(spectrumFound && txFound && rxFound){
+        		    	pathFound = ppCount;
+        		    	ArrayList<Object> tmp1 = new ArrayList<>();
+        		    	tmp1.add(pCount);
+        		    	tmp1.add(paths.get(ppCount));
+        		    	pathFoundList.add(tmp1);
+        		    	break;
+        		    }
+        		}
+    		    if(pathFound == -1){
+    		    	addServiceBooleanReturn = false;        		   
+    		    	addServicePhysicalLength = (Integer) null;
+    		    	int addServiceVirtualLength = (Integer) null;
+    		    	int addServicePathDelay = (Integer) null;
+    		    	addServiceTransTake = (Integer)null;
+    		    }
+        	}
+        	if(pathij.get(pCount).get(1).equals("PLP")){
+        		int cN0 = (demand + 80 -1)/80;
+        		int cN = 10*((cN0 + 4 - 1)/10);
+        		for(int ppCount = 0; ppCount < paths.size(); ppCount++){
+        			spectrumSearch(nodei, nodej, cN, paths.get(ppCount));
+        		    boolean spectrumFound = spectrumReserveBooleanReturn;
+        		    int spectrumX = spectrumReserveIntReturn;
+        		    transponderSearch(nodei);
+        		    boolean txFound = transponderSearchFound;
+        		    int txX = transponder;
+        		    transponderSearch(nodej);
+        		    boolean rxFound = transponderSearchFound;
+        		    int rxX = transponder;
+        		    if(spectrumFound && txFound && rxFound){
+        		    	pathFound = ppCount;
+        		    	ArrayList<Object> tmp1 = new ArrayList<>();
+        		    	tmp1.add(pCount);
+        		    	tmp1.add(paths.get(ppCount));
+        		    	pathFoundList.add(tmp1);
+        		    	break;
+        		    }
+        		}
+    		    if(pathFound == -1){
+    		    	addServiceBooleanReturn = false;        		   
+    		    	addServicePhysicalLength = (Integer) null;
+    		    	int addServiceVirtualLength = (Integer) null;
+    		    	int addServicePathDelay = (Integer) null;
+    		    	addServiceTransTake = (Integer)null;
+    		    }
+        	}
+            currNode = (int) pathij.get(pCount+1).get(0);
+        }
+        currNode = nodei;
+        for(int pCount = 0; pCount < pathij.size()-1; pCount++){
+        	KshortestPath(currNode,pathij.get(pCount+1));
+        	ArrayList<ArrayList<Integer>> paths = KshortestPathResult;//path result in KshortestPathResult
+        	if(pathij.get(pCount).get(1).equals("PSubLP")){
+        		ArrayList<Integer> pFoundx = null;
+        		for(ArrayList<Object> px: pathFoundList){
+        			if((int) px.get(0) == pCount){
+        				pFoundx = (ArrayList<Integer>) px.get(1);
+        			}
+        		}
+        		boolean isTake = true;
+        		if(pCount > 0 && !pathij.get(pCount-1).get(1).equals("ELP")){
+        			isTake = false;
+        		}
+        		boolean isDone = addSubLightPath(currNode, (int)pathij.get(pCount+1).get(0), demand, isTake, pFoundx);
+        		if(isDone == false){
+    		    	addServiceBooleanReturn = false;        		   
+    		    	addServicePhysicalLength = (Integer) null;
+    		    	int addServiceVirtualLength = (Integer) null;
+    		    	int addServicePathDelay = (Integer) null;
+    		    	addServiceTransTake = (Integer)null;
+        		}
+        		transTake += 0.66;
+        		consumeLightPath(currNode, (int)pathij.get(pCount+1).get(0), demand);
+        		if(pFoundx == null){
+        			System.out.println("643: " + pFoundx);
+        		}
+        		physicalLength += pFoundx.size() - 1;
+        		for(int ct = 0; ct < pFoundx.size()-1; ct++){
+        			int nextNode = pFoundx.get(ct+1);
+        			pathDelay +=  disMatrix.get(pFoundx.get(ct)).get(nextNode);
+        		}
+        		
+        	}
+        	if(pathij.get(pCount).get(1).equals("ELP")){
+        		consumeLightPath(currNode, (int)pathij.get(pCount+1).get(0),demand);
+        		ArrayList<Integer> ppaths = (ArrayList<Integer>) lightPathRes.get(currNode*100+(int)pathij.get(pCount+1).get(0)).
+        				get(lightPathRes.get(currNode*100+(int)pathij.get(pCount+1).get(0)).size()-1).get(0);
+        		for(int ct = 0; ct < ppaths.size()-1; ct++){
+        			int nextNode = ppaths.get(ct + 1);
+        			pathDelay += disMatrix.get(ppaths.get(ct)).get(nextNode);
+        		}
+        		ArrayList<Object> tmp2 = (ArrayList<Object>) lightPathRes.get(currNode*100+(int)pathij.get(pCount+1).get(0)).
+        				get(lightPathRes.get(currNode*100+(int)pathij.get(pCount+1).get(0)).size()-1).get(0);
+        		physicalLength +=  tmp2.size()-1;
+        	
+        	
+        	}
+        	currNode = (int)pathij.get(pCount+1).get(0);
 
-    }
-
-
+        }
+    	ArrayList<Object> tmp3 = new ArrayList();
+    	ArrayList<Object> tmp4= new ArrayList();
+    	for(int i = 0;i < pathij.size()-1; i++){
+    		tmp4.add(pathij.get(i));
+    	}    	       	
+    	tmp3.add(nodei);
+    	tmp3.add(nodej);        	
+    	tmp3.add(tmp4); 
+    	tmp3.add(demand); 
+    	tmp3.add(pathDelay); 
+    	tmp3.add(serviceID); 
+    	tmp3.add(stoptime); 
+    	servList.add(tmp3);
+    	addServiceBooleanReturn = true;        		   
+    	addServicePhysicalLength = physicalLength;
+    	int addServiceVirtualLength = virtualLength;
+    	int addServicePathDelay = pathDelay;
+    	addServiceTransTake = transTake;
+	}
 
     /**
     ruoxing tianjia
@@ -1055,14 +1682,14 @@ public class mainIntegration {
 
 
 
-    public void KshortestPath(int nodei, int nodej) {
+    public void KshortestPath(int nodei, Object nodej) {
         int K = 3;
         ArrayList<Double> returnDistanceList = new ArrayList<>();
         ArrayList<ArrayList<Integer>> returnPathList = new ArrayList<>();
 //        TODO：这里distanceMatrix必须转化为double类型
 //        金博这里的K最短路写的有点奇怪
         double[][] distanceMatrix = int2douMatrixConversion(DistanceMatrix);
-        shortestPath(distanceMatrix, nodei, nodej);
+        shortestPath(distanceMatrix, nodei, (int)nodej);
         double dis0 = getDis_ShortestPath();
         ArrayList<Integer> path0 = getPathij_ShortestPath();
         returnDistanceList.add(dis0);
@@ -1070,7 +1697,7 @@ public class mainIntegration {
         K = K - 1;
 
         distanceMatrix[path0.get(0)][path0.get(1)] = Double.POSITIVE_INFINITY;
-        shortestPath(distanceMatrix, nodei, nodej);
+        shortestPath(distanceMatrix, nodei, (int)nodej);
         double dis1 = getDis_ShortestPath();
         ArrayList<Integer> path1 = getPathij_ShortestPath();
         returnDistanceList.add(dis1);
@@ -1079,7 +1706,7 @@ public class mainIntegration {
 
         distanceMatrix[path0.get(0)][path0.get(1)] = Double.POSITIVE_INFINITY;
         distanceMatrix[path1.get(1)][path1.get(2)] = Double.POSITIVE_INFINITY;
-        shortestPath(distanceMatrix, nodei, nodej);
+        shortestPath(distanceMatrix, nodei, (int)nodej);
         double dis2 = getDis_ShortestPath();
         ArrayList<Integer> path2 = getPathij_ShortestPath();
         returnDistanceList.add(dis2);
@@ -1117,7 +1744,6 @@ public class mainIntegration {
      * edgeWeight
      * TODO
      **/
-
 
     public void edgeWeight(int nodei, int nodej, int demand) {
         /**
